@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-tab DOS</title>
+  <script>
+    let id = "spawner";
+    let last = 0;
+    const bc = new BroadcastChannel("bug1927905");
+
+    function spamTabs() {
+      let numtabs = parseInt(document.getElementById("numtabs").value)
+      for (let i = last; i < last+numtabs; i++) {
+        window.open("#DOS"+i, '_blank');
+      }
+      last += numtabs;
+    }
+
+    function spawnerListener(evt) {
+      let p = document.createElement("p");
+      p.textContent = evt.timeStamp + ':\t ' + evt.data;
+      document.body.appendChild(p);
+    }
+
+    function dosListener(evt) {
+      bc.postMessage(`${id}-${evt.timeStamp}:\t ${evt.data}`);
+    }
+
+    if (location.hash.startsWith("#DOS")) {
+      id = location.hash.slice(1);
+      bc.onmessage = dosListener;
+      setTimeout("bc.postMessage(`Hello from ${id}`)", 1000); // kick it off
+    }
+    else {
+      bc.onmessage = spawnerListener;
+    }
+  </script>
+</head>
+<body>
+  <input id=numtabs value=10>
+  <button onclick="spamTabs()">Open Tabs</button>
+</body>
+</html>
