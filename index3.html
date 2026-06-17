@@ -39,26 +39,12 @@
             });
     }
 
-    function attemptSMS() {
-      const sms = "sms:1234567890";
-
-      try {
-        log("Attempting SMS: " + sms);
-        window.location.href = sms;
-      } catch (e) {
-        log("SMS error: " + e.message);
-      }
-    }
-
     function runTest() {
       log("=== Starting Test ===");
       log("Timestamp: " + new Date().toISOString());
 
       log("--- Attempting Phone Call ---");
       attemptPhoneCall();
-
-      log("--- Attempting SMS ---");
-      attemptSMS();
 
       log("=== Finished ===");
     }
