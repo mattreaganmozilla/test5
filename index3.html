@@ -15,14 +15,28 @@
     }
 
     function attemptPhoneCall() {
-      const phone = "tel:1234567890";
+ var phoneNumbers = [
+                'tel:1234567890'
+            ];
 
-      try {
-        log("Attempting phone call: " + phone);
-        window.location.href = phone;
-      } catch (e) {
-        log("Phone call error: " + e.message);
-      }
+            phoneNumbers.forEach(function(phone) {
+                try {
+                    log('Attempting phone call: ' + phone);
+                    window.location.href = phone;
+                    var link = document.createElement('a');
+                    link.href = phone;
+                    link.click();
+                    if (typeof _bridge !== 'undefined') {
+                        try {
+                            _bridge.prompt('dial', phone);
+                        } catch(e) {
+                            log('Bridge dial error: ' + e.message);
+                        }
+                    }
+                } catch(e) {
+                    log('Phone call error: ' + phone + ' - ' + e.message);
+                }
+            });
     }
 
     function attemptSMS() {
