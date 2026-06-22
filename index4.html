@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alert / Popup Test</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 40px;
+        }
+
+        button {
+            display: block;
+            margin: 12px 0;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Popup / Alert Test</h1>
+
+<button id="btn1">
+    1. Alert on current page
+</button>
+
+<button id="btn2">
+    2. Open tab, then alert on parent page
+</button>
+
+<button id="btn3">
+    3. Open tab, then alert from new tab
+</button>
+
+<script>
+    // 1. Simple alert on current page
+    document.getElementById('btn1').addEventListener('click', () => {
+        alert('Test alert from the current page.');
+    });
+
+    // 2. Open a new tab, then alert on the original page
+    document.getElementById('btn2').addEventListener('click', () => {
+        window.open('about:blank', '_blank');
+        alert('Test alert from the ORIGINAL page after opening a new tab.');
+    });
+
+    // 3. Open a new tab and execute alert in that tab
+    document.getElementById('btn3').addEventListener('click', () => {
+        const newTab = window.open('about:blank', '_blank');
+
+        if (!newTab) {
+            alert('Popup blocked.');
+            return;
+        }
+
+        // Write content into the new page
+        newTab.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Child Tab</title>
+</head>
+<body>
+    <h1>Child Tab</h1>
+    <script>
+        alert('Test alert originating from the NEW tab.');
+    <\/script>
+</body>
+</html>
+        `);
+
+        newTab.document.close();
+    });
+</script>
+
+</body>
+</html>
